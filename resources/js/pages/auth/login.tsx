@@ -5,7 +5,6 @@ import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
@@ -79,7 +78,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <InputError message={errors.password} />
                     </div>
 
-                    <div className="flex items-center space-x-3">
+                    {/* <div className="flex items-center space-x-3">
                         <Checkbox
                             id="remember"
                             name="remember"
@@ -88,7 +87,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             tabIndex={3}
                         />
                         <Label htmlFor="remember">Remember me</Label>
-                    </div>
+                    </div> */}
 
                     <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
@@ -96,12 +95,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     </Button>
                 </div>
 
-                <div className="text-muted-foreground text-center text-sm">
+                {/* <div className="text-muted-foreground text-center text-sm">
                     Don't have an account?{' '}
                     <TextLink href={route('register')} tabIndex={5}>
                         Sign up
                     </TextLink>
-                </div>
+                </div> */}
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
