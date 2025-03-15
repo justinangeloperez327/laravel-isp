@@ -13,7 +13,7 @@ class CustomerDeviceController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
