@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subscription;
 use App\Http\Requests\StoreSubscriptionRequest;
 use App\Http\Requests\UpdateSubscriptionRequest;
+use Inertia\Inertia;
 
 class SubscriptionController extends Controller
 {
@@ -13,7 +14,9 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('subscriptions/index', [
+            'subscriptions' => Subscription::all(),
+        ]);
     }
 
     /**

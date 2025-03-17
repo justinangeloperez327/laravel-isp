@@ -1,10 +1,14 @@
 <?php
 
-use App\Http\Controllers\BillingController;
-use App\Http\Controllers\CustomerController;
-
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\BillingController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SubscriptionController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -16,6 +20,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('customers', CustomerController::class);
+    Route::resource('invoices', InvoiceController::class);
+    Route::resource('devices', DeviceController::class);
+    Route::resource('subscriptions', SubscriptionController::class);
+    Route::resource('plans', PlanController::class);
     Route::get('billing', [BillingController::class, 'index'])->name('billing.index');
 });
 

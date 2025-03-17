@@ -24,7 +24,7 @@ class PlanController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('plans/create');
     }
 
     /**
@@ -32,7 +32,9 @@ class PlanController extends Controller
      */
     public function store(StorePlanRequest $request)
     {
-        //
+        Plan::create($request->validated());
+
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -40,7 +42,9 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
-        //
+        return Inertia::render('plans/show', [
+            'plan' => $plan,
+        ]);
     }
 
     /**
@@ -48,7 +52,9 @@ class PlanController extends Controller
      */
     public function edit(Plan $plan)
     {
-        //
+        return Inertia::render('plans/edit', [
+            'plan' => $plan,
+        ]);
     }
 
     /**
@@ -56,7 +62,9 @@ class PlanController extends Controller
      */
     public function update(UpdatePlanRequest $request, Plan $plan)
     {
-        //
+        $plan->update($request->validated());
+
+        return redirect()->route('plans.index');
     }
 
     /**
@@ -64,6 +72,8 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-        //
+        $plan->delete();
+
+        return redirect()->route('plans.index');
     }
 }

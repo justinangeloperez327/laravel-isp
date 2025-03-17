@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Device;
 use App\Http\Requests\StoreDeviceRequest;
 use App\Http\Requests\UpdateDeviceRequest;
+use Inertia\Inertia;
 
 class DeviceController extends Controller
 {
@@ -13,7 +14,9 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('devices/index', [
+            'devices' => Device::all(),
+        ]);
     }
 
     /**
@@ -21,7 +24,7 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('devices/create');
     }
 
     /**
@@ -29,7 +32,9 @@ class DeviceController extends Controller
      */
     public function store(StoreDeviceRequest $request)
     {
-        //
+        Device::create($request->validated());
+
+        return redirect()->route('devices.index');
     }
 
     /**
@@ -37,7 +42,9 @@ class DeviceController extends Controller
      */
     public function show(Device $device)
     {
-        //
+        return Inertia::render('devices/show', [
+            'device' => $device,
+        ]);
     }
 
     /**
@@ -45,7 +52,9 @@ class DeviceController extends Controller
      */
     public function edit(Device $device)
     {
-        //
+        return Inertia::render('devices/edit', [
+            'device' => $device,
+        ]);
     }
 
     /**
@@ -53,7 +62,9 @@ class DeviceController extends Controller
      */
     public function update(UpdateDeviceRequest $request, Device $device)
     {
-        //
+        $device->update($request->validated());
+
+        return redirect()->route('devices.index');
     }
 
     /**
@@ -61,6 +72,8 @@ class DeviceController extends Controller
      */
     public function destroy(Device $device)
     {
-        //
+        $device->delete();
+
+        return redirect()->route('devices.index');
     }
 }
