@@ -24,13 +24,13 @@ class CustomerController extends Controller
         $filters = $request->only('search');
 
         $data = Customer::query()
-            ->whereAny([
-                'first_name',
-                'middle_name',
-                'last_name',
-                'email',
-                'mobile_no',
-            ], 'like', '%'.$filters['search'].'%' ?? '')
+            ->when($request->has('search'), function ($query) use ($filters) {
+                $query->where('first_name', 'like', '%'.$filters['search'].'%')
+                    ->orWhere('middle_name', 'like', '%'.$filters['search'].'%')
+                    ->orWhere('last_name', 'like', '%'.$filters['search'].'%')
+                    ->orWhere('mobile_no', 'like', '%'.$filters['search'].'%')
+                    ->orWhere('email', 'like', '%'.$filters['search'].'%');
+            })
             ->orderBy($sortField, $sortDirection)
             ->paginate(perPage: $perPage, page: $page);
 

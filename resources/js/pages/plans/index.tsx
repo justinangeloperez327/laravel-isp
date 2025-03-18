@@ -1,7 +1,8 @@
+import { columns } from '@/components/plans/columns';
+import { DataTable } from '@/components/plans/data-table';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Plan, type BreadcrumbItem } from '@/types';
+import { PaginationLink, Plan, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,7 +12,18 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Index({ plans }: { plans: Plan[] }) {
+interface PaginatedData {
+    data: Plan[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    links: PaginationLink[];
+    to: number;
+    from: number;
+}
+
+export default function Index({ data }: { data: PaginatedData; status: string }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Plans" />
@@ -22,29 +34,7 @@ export default function Index({ plans }: { plans: Plan[] }) {
                             <Button>New Plan</Button>
                         </Link>
                     </div>
-                    <Table>
-                        <TableCaption>A list of your recent plans.</TableCaption>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[100px]">ID</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Speed</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {plans.map((plan) => (
-                                <TableRow key={plan.id}>
-                                    <TableCell>{plan.id}</TableCell>
-                                    <TableCell>{plan.name}</TableCell>
-                                    <TableCell>{plan.speed}</TableCell>
-                                    <TableCell>{plan.price}</TableCell>
-                                    <TableCell>{/* <Link href={`/plans/${device.id}/edit`}>Edit</Link> */}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <DataTable columns={columns} paginatedData={data} />
                 </div>
             </div>
         </AppLayout>

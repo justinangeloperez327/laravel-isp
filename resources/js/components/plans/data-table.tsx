@@ -2,62 +2,81 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { PaginationLink, Plan } from '@/types';
 import { router } from '@inertiajs/react';
 import {
     ColumnDef,
-    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
-    SortingState,
+    PaginationState,
     useReactTable,
-    VisibilityState,
 } from '@tanstack/react-table';
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useState } from 'react';
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
+interface PaginatedData {
+    data: Plan[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    links: PaginationLink[];
+    to: number;
+    from: number;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+interface DataTableProps {
+    columns: ColumnDef<Plan>[];
+    paginatedData: PaginatedData;
+}
 
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-
-    const pageSizes = [10, 15, 30, 40, 50, 100];
-
-    const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 10,
+export function DataTable({ columns, paginatedData }: DataTableProps) {
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: paginatedData.current_page - 1,
+        pageSize: paginatedData.per_page,
     });
+    const [globalFilter, setGlobalFilter] = useState<string>('');
 
     const table = useReactTable({
-        data,
+        data: paginatedData.data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
-        onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
+        getPaginationRowModel: getPaginationRowModel(),
+        manualFiltering: true,
+        manualPagination: true,
+        pageCount: Math.ceil(paginatedData.total / pagination.pageSize), // Use total rows from backend
         onPaginationChange: (updater) => {
-            if (typeof updater === 'function') {
-                setPagination({ ...pagination });
-            } else {
-                setPagination(updater);
-            }
-            router.get(route('product.index'), {}, { preserveState: false, preserveScroll: true });
+            const newPagination = typeof updater === 'function' ? updater(pagination) : updater;
+            setPagination(newPagination);
+
+            router.get(
+                route('plans.index'),
+                {
+                    page: newPagination.pageIndex + 1,
+                    per_page: newPagination.pageSize,
+                    search: globalFilter,
+                },
+                { preserveState: true, preserveScroll: true },
+            );
         },
+        onGlobalFilterChange: (value) => {
+            setGlobalFilter(value);
+            router.get(
+                route('plans.index'),
+                {
+                    page: pagination.pageIndex + 1,
+                    per_page: pagination.pageSize,
+                    search: value,
+                },
+                { preserveState: true, preserveScroll: true },
+            );
+        },
+
         state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
             pagination,
+            globalFilter,
         },
     });
 
@@ -65,9 +84,13 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         <div>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter Name"
-                    value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-                    onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+                    placeholder="Search..."
+                    value={globalFilter ?? ''} // Bind to globalFilter state
+                    onChange={(e) => {
+                        const value = e.target.value || ''; // Use undefined to clear the filter
+                        setGlobalFilter(value); // Update globalFilter state
+                        table.setGlobalFilter(value); // Update table's global filter
+                    }}
                     className="max-w-sm"
                 />
             </div>
@@ -76,13 +99,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                                        </TableHead>
-                                    );
-                                })}
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         ))}
                     </TableHeader>
@@ -105,47 +126,66 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex items-center justify-between space-x-2 py-4">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">Rows per page</p>
-                    <Select value={pagination.pageSize.toString()} onValueChange={(e) => table.setPageSize(Number(e.target.value))}>
+                    <Select
+                        value={table.getState().pagination.pageSize.toString()}
+                        onValueChange={(value) => {
+                            table.setPageSize(Number(value));
+                        }}
+                    >
                         <SelectTrigger className="h-8 w-[70px]">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent side="top">
-                            {pageSizes.map((size) => (
-                                <SelectItem key={size} value={size.toString()}>
-                                    {size}
+                            {[10, 20, 50, 100].map((pageSize) => (
+                                <SelectItem key={pageSize} value={pageSize.toString()}>
+                                    {pageSize}
                                 </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="space-x-2">
-                    <div className="flex items-center space-x-2">
+                {/* <div className="flex items-center space-x-2">
+                    <span className="text-sm">
+                        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                    </span>
+                </div> */}
+                <div className="flex items-center space-x-2">
+                    <Button
+                        variant="outline"
+                        className="hidden h-8 w-8 p-0 lg:flex"
+                        onClick={() => table.setPageIndex(0)}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        <ChevronFirstIcon className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" className="h-8 w-8 p-0" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+                        <ChevronLeftIcon className="h-4 w-4" />
+                    </Button>
+                    {table.getPageOptions().map((page) => (
                         <Button
+                            key={page}
                             variant="outline"
-                            className="hidden h-8 w-8 p-0 lg:flex"
-                            disabled={!table.getCanPreviousPage()}
-                            onClick={() => table.setPageIndex(0)}
+                            className="h-8 w-8 p-0"
+                            onClick={() => table.setPageIndex(page)}
+                            disabled={table.getState().pagination.pageIndex === page}
                         >
-                            <ChevronFirstIcon className="h-4 w-4" />
+                            {page + 1}
                         </Button>
-                        <Button variant="outline" className="h-8 w-8 p-0" disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>
-                            <ChevronLeftIcon className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" className="h-8 w-8 p-0" disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>
-                            <ChevronRightIcon className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="hidden h-8 w-8 p-0 lg:flex"
-                            disabled={!table.getCanNextPage()}
-                            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                        >
-                            <ChevronLastIcon className="h-4 w-4" />
-                        </Button>
-                    </div>
+                    ))}
+                    <Button variant="outline" className="h-8 w-8 p-0" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+                        <ChevronRightIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="hidden h-8 w-8 p-0 lg:flex"
+                        onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        <ChevronLastIcon className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
         </div>

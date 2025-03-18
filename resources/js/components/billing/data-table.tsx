@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Customer, PaginationLink } from '@/types';
+import { Billing, PaginationLink } from '@/types';
 import { router } from '@inertiajs/react';
 import {
     ColumnDef,
@@ -16,7 +16,7 @@ import {
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useState } from 'react';
 interface PaginatedData {
-    data: Customer[];
+    data: Billing[];
     current_page: number;
     last_page: number;
     per_page: number;
@@ -27,7 +27,7 @@ interface PaginatedData {
 }
 
 interface DataTableProps {
-    columns: ColumnDef<Customer>[];
+    columns: ColumnDef<Billing>[];
     paginatedData: PaginatedData;
 }
 
@@ -52,7 +52,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
             setPagination(newPagination);
 
             router.get(
-                route('customers.index'),
+                route('billing.index'),
                 {
                     page: newPagination.pageIndex + 1,
                     per_page: newPagination.pageSize,
@@ -64,7 +64,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
         onGlobalFilterChange: (value) => {
             setGlobalFilter(value);
             router.get(
-                route('customers.index'),
+                route('billing.index'),
                 {
                     page: pagination.pageIndex + 1,
                     per_page: pagination.pageSize,

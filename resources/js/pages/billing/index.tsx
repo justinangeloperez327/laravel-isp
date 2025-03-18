@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
+import { Billing, type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,18 +11,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Customer {
-    id: number;
-    address: string;
-    name: string;
-    jo_number: string;
-    bill: string;
-    payment_type: string;
-    contact_number: string;
-    plan: string;
-}
-
-export default function Index({ customers }: { customers: Customer[] }) {
+export default function Index({ customers }: { customers: Billing[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Plans" />

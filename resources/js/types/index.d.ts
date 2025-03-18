@@ -122,3 +122,14 @@ export interface Plan {
     created_at: string;
     updated_at: string;
 }
+
+export interface Billing {
+    id: number;
+    address: string;
+    name: string;
+    jo_number: string;
+    bill: string;
+    payment_type: string;
+    contact_number: string;
+    plan: string;
+}
