@@ -3,6 +3,6 @@
 use function Pest\Laravel\get;
 
 it('returns a successful response', function () {
-    get('/')
-    ->assertRedirectToRoute('login');
-});
+get('/')
+->assertRedirectToRoute('login');
+    });
