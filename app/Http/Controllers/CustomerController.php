@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Device;
+use App\Models\Plan;
+use Exception;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -41,7 +44,10 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('customers/create');
+        return Inertia::render('customers/create', [
+            'plans' => Plan::all(),
+            'devices' => Device::all(),
+        ]);
     }
 
     /**
@@ -50,6 +56,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $customer = Customer::create($request->validated());
+        $customer->devices()->sync($request->input('devices'));
 
         return to_route('customers.index')->with('status', 'Customer created successfully!');
     }
@@ -59,6 +66,8 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        $customer->load('devices');
+
         return Inertia::render('customers/show', [
             'customer' => $customer,
         ]);
@@ -69,7 +78,11 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        $customer->load('devices', 'plan');
+
         return Inertia::render('customers/edit', [
+            'plans' => Plan::all(),
+            'devices' => Device::all(),
             'customer' => $customer,
         ]);
     }
@@ -80,8 +93,9 @@ class CustomerController extends Controller
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
+        $customer->devices()->sync($request->input('devices'));
 
-        return redirect()->route('customers.index');
+        return to_route('customers.index')->with('status', 'Customer updated successfully!');
     }
 
     /**

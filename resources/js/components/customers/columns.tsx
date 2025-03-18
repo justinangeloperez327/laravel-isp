@@ -77,10 +77,13 @@ export const columns: ColumnDef<Customer>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(customer.id.toString())}>Copy Customer ID</DropdownMenuItem>
+                        {/* <DropdownMenuItem onClick={() => navigator.clipboard.writeText(customer.id.toString())}>Copy Customer ID</DropdownMenuItem> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link href={`/customers/${customer.id}`}>View customer details</Link>
+                            <Link href={`/customers/${customer.id}`}>View</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href={`/customers/${customer.id}/edit`}>Edit</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

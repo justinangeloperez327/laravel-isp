@@ -14,11 +14,6 @@ class UpdateCustomerRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -28,20 +23,30 @@ class UpdateCustomerRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'mobile_no' => ['required', 'string', 'max:255'],
+
             'floor_or_unit' => ['nullable', 'string', 'max:255'],
             'street' => ['nullable', 'string', 'max:255'],
-            'compound_or_bldg' => ['nullable', 'string', 'max:255'],
+            'compound_or_building' => ['nullable', 'string', 'max:255'],
             'barangay' => ['nullable', 'string', 'max:255'],
             'municipality_or_city' => ['nullable', 'string', 'max:255'],
             'province' => ['nullable', 'string', 'max:255'],
+
+            'plan_id' => ['required', 'exists:plans,id'],
+            'start_date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
+            'status' => ['nullable', 'in:pending,connected,disconnected'],
+
+            'lp' => ['nullable', 'string', 'max:255'],
+            'np' => ['nullable', 'string', 'max:255'],
+            'slot' => ['nullable', 'string', 'max:255'],
+
+            'devices' => ['nullable', 'array'],
+            'devices.*' => ['required', 'exists:devices,id'],
+
+            'billing_due' => ['required', 'in:15th,30th'],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [
@@ -61,6 +66,37 @@ class UpdateCustomerRequest extends FormRequest
             'mobile_no.required' => 'The mobile number is required.',
             'mobile_no.string' => 'The mobile number must be a string.',
             'mobile_no.max' => 'The mobile number must not be greater than 255 characters.',
+
+            'floor_or_unit.string' => 'The floor or unit must be a string.',
+            'floor_or_unit.max' => 'The floor or unit must not be greater than 255 characters.',
+            'street.string' => 'The street must be a string.',
+            'street.max' => 'The street must not be greater than 255 characters.',
+            'compound_or_building.string' => 'The compound or building must be a string.',
+            'compound_or_building.max' => 'The compound or building must not be greater than 255 characters.',
+            'barangay.string' => 'The barangay must be a string.',
+            'barangay.max' => 'The barangay must not be greater than 255 characters.',
+            'municipality_or_city.string' => 'The municipality or city must be a string.',
+            'municipality_or_city.max' => 'The municipality or city must not be greater than 255 characters.',
+            'province.string' => 'The province must be a string.',
+            'province.max' => 'The province must not be greater than 255 characters.',
+
+            'plan_id.required' => 'The plan is required.',
+            'plan_id.exists' => 'The selected plan is invalid.',
+            'start_date.date' => 'The start date must be a valid date.',
+            'end_date.date' => 'The end date must be a valid date.',
+            'status.in' => 'The selected status is invalid.',
+
+            'lp.string' => 'The LP must be a string.',
+            'lp.max' => 'The LP must not be greater than 255 characters.',
+            'np.string' => 'The NP must be a string.',
+            'np.max' => 'The NP must not be greater than 255 characters.',
+            'slot.string' => 'The slot must be a string.',
+            'slot.max' => 'The slot must not be greater than 255 characters.',
+            'devices.array' => 'The devices must be an array.',
+            'devices.*.required' => 'The selected devices is invalid.',
+
+            'billing_due.required' => 'The billing due is required.',
+            'billing_due.in' => 'The selected billing due is invalid.',
         ];
     }
 }

@@ -11,21 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_devices', function (Blueprint $table) {
-            $table->id();
+        Schema::create('customer_device', function (Blueprint $table) {
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('device_id')->constrained();
-            $table->enum('status', ['active', 'inactive']);
-            $table->string('remarks')->nullable();
-            $table->timestamps();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('customer_devices');
     }
 };

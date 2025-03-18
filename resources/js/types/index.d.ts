@@ -36,7 +36,7 @@ export interface User {
     avatar?: string;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+    [key: string]: unknown;
 }
 
 export interface Customer {
@@ -47,26 +47,35 @@ export interface Customer {
     last_name: string;
     mobile_no: string;
     email: string;
-    floor_unit?: string;
+
+    floor_or_unit?: string;
     street?: string;
     compound_or_building?: string;
     barangay?: string;
     municipality_or_city?: string;
     province?: string;
+
+    plan_id?: number;
+    start_date?: string;
+    end_date?: string;
+    status?: string;
+
+    lp?: string;
+    np?: string;
+    slot?: string;
+
+    billing_due?: string;
+
     created_at?: string;
     updated_at?: string;
+    devices?: Device[];
+    [key: string]: unknown;
 }
 
 export interface Device {
     id: number;
     name: string;
     type: string;
-    description: string;
-    model: string;
-    serial_no: string;
-    mac_address: string;
-    ip_address: string;
-    status: string;
     created_at: string;
     updated_at: string;
 }
@@ -103,11 +112,13 @@ export interface PaginationLink {
 }
 
 export interface Plan {
-    id: number;
+    id: string;
     name: string;
     description: string;
     speed: string;
-    price: string;
+    price: number;
+    type: string;
+    data: string;
     created_at: string;
     updated_at: string;
 }

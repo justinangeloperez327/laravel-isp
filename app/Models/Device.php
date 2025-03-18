@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Device extends Model
 {
@@ -12,17 +13,11 @@ class Device extends Model
 
     protected $fillable = [
         'name',
-        'description',
-        'mac_address',
-        'serial_no',
-        'model',
         'type',
-        'status',
-        'remarks',
     ];
 
-    public function subscription()
+    public function customers(): BelongsToMany
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsToMany(Customer::class);
     }
 }

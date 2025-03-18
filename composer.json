@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "laravel/internet-service-provider",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A Laravel project for managing internet service provider operations, including customer management, billing, and support.",
     "keywords": [
         "laravel",
         "framework"

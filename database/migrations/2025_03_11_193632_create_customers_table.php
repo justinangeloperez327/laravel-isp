@@ -23,11 +23,24 @@ return new class extends Migration
             // address
             $table->string('floor_or_unit')->nullable();
             $table->string('street')->nullable();
-            $table->string('compound_or_bldg')->nullable();
+            $table->string('compound_or_building')->nullable();
             $table->string('barangay')->nullable();
             $table->string('municipality_or_city')->nullable();
             $table->string('province')->nullable();
 
+            //subscription
+            $table->foreignId('plan_id')->constrained();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->enum('status', ['pending', 'connected', 'disconnected'])->default('pending');
+
+            // fiber number slot
+            $table->string('lp')->nullable();
+            $table->string('np')->nullable();
+            $table->string('slot')->nullable();
+
+            //15nth or 30th
+            $table->enum('billing_due', ['15th', '30th'])->default('15th');
             $table->timestamps();
         });
     }
