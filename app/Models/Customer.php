@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,12 +44,8 @@ class Customer extends Model
         'registration_date' => 'date',
         'start_date' => 'date',
         'end_date' => 'date',
+        'billing_due' => 'integer',
     ];
-
-    public function subscriptions(): HasOne
-    {
-        return $this->hasOne(Subscription::class);
-    }
 
     public function getFullNameAttribute()
     {
@@ -70,5 +65,10 @@ class Customer extends Model
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function billings(): HasMany
+    {
+        return $this->hasMany(Billing::class);
     }
 }

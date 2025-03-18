@@ -28,7 +28,7 @@ interface CreatePlanProps {
 }
 
 export default function Create({ status }: CreatePlanProps) {
-    const { data, setData, post, processing, errors, reset } = useForm<PlanForm>({
+    const { data, setData, post, processing, errors, reset } = useForm<Required<PlanForm>>({
         name: '',
         description: '',
         speed: '',
@@ -110,7 +110,9 @@ export default function Create({ status }: CreatePlanProps) {
                                         <Label htmlFor="price">Price</Label>
                                         <Input
                                             id="price"
-                                            type="text"
+                                            step={0.01}
+                                            min={0}
+                                            type="number"
                                             required
                                             tabIndex={4}
                                             value={data.price}

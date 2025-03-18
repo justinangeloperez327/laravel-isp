@@ -32,7 +32,6 @@ it('updates profile', function () {
     expect($user->username)->toBe('Test User');
 });
 
-
 it('deletes account with correct password', function () {
     $user = User::factory()->create();
 

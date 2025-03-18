@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Invoice;
 use Inertia\Inertia;
 
 class InvoiceController extends Controller
@@ -60,10 +60,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
-    {
-
-    }
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice) {}
 
     /**
      * Remove the specified resource from storage.

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('municipality_or_city')->nullable();
             $table->string('province')->nullable();
 
-            //subscription
+            // subscription
             $table->foreignId('plan_id')->constrained();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -39,8 +39,8 @@ return new class extends Migration
             $table->string('np')->nullable();
             $table->string('slot')->nullable();
 
-            //15nth or 30th
-            $table->enum('billing_due', ['15th', '30th'])->default('15th');
+            // 15nth or 30th
+            $table->integer('billing_due')->default(15);
             $table->timestamps();
         });
     }

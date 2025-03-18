@@ -21,7 +21,6 @@ return new class extends Migration
             $table->decimal('price', 8, 2)->default(0);
             $table->enum('type', ['wireless', 'fiber']);
             $table->boolean('is_active')->default(true);
-            $table->timestamps();
         });
 
         DB::table('plans')->insert([

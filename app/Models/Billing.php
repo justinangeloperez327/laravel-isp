@@ -2,19 +2,37 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Billing extends Model
 {
-    protected $table = 'billings';
+    use HasFactory;
 
     protected $fillable = [
         'customer_id',
-        'subscription_id',
-        'billing_date',
-        'due_date',
+        'plan_id',
         'amount',
-        'remarks'
+        'due_date',
+        'status',
+        'billing_period_start',
+        'billing_period_end',
     ];
 
+    protected $casts = [
+        'due_date' => 'date',
+        'billing_period_start' => 'date',
+        'billing_period_end' => 'date',
+    ];
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function plan(): BelongsTo
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }

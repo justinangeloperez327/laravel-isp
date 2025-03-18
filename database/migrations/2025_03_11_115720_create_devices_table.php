@@ -39,8 +39,7 @@ return new class extends Migration
             [
                 'name' => '5V6-10',
                 'type' => 'router',
-            ]
+            ],
         ]);
     }
-
 };

@@ -80,7 +80,7 @@ export default function Create({ status, plans, devices }: CreateCustomerProps) 
         lp: '',
         np: '',
         slot: '',
-        billing_due: '15th',
+        billing_due: '15',
         devices: [],
     });
 
@@ -338,8 +338,8 @@ export default function Create({ status, plans, devices }: CreateCustomerProps) 
                                                     <SelectContent>
                                                         <SelectGroup>
                                                             <SelectLabel>Billing Due</SelectLabel>
-                                                            <SelectItem value="15th">Every 15th</SelectItem>
-                                                            <SelectItem value="30th">Every 30th</SelectItem>
+                                                            <SelectItem value="15">Every 15th</SelectItem>
+                                                            <SelectItem value="30">Every 30th</SelectItem>
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </Select>

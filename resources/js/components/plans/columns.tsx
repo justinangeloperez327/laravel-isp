@@ -11,62 +11,35 @@ import { Link } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 
-export type Customer = {
+export type Plan = {
     id: string;
-    registration_date: string;
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-    mobile_no: string;
-    email: string;
+    name: string;
+    speed: string;
+    price: string;
 };
 
-export const columns: ColumnDef<Customer>[] = [
+export const columns: ColumnDef<Plan>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
     },
     {
-        accessorKey: 'registration_date',
-        header: 'Registration Date',
+        accessorKey: 'name',
+        header: 'Name',
     },
     {
-        accessorKey: 'first_name',
-        header: 'First Name',
+        accessorKey: 'speed',
+        header: 'Speed',
     },
     {
-        accessorKey: 'middle_name',
-        header: 'Middle Name',
-    },
-    {
-        accessorKey: 'last_name',
-        header: 'Last Name',
-    },
-    {
-        accessorKey: 'mobile_no',
-        header: 'Mobile No.',
-    },
-    {
-        accessorKey: 'status',
-        header: 'Status',
-    },
-    {
-        accessorKey: 'email',
-        header: 'Email',
-        // header: ({ column }) => {
-        //     return (
-        //         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-        //             Email
-        //             <ArrowUpDown className="ml-2 h-4 w-4" />
-        //         </Button>
-        //     );
-        // },
+        accessorKey: 'price',
+        header: 'Price',
     },
     {
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
-            const customer = row.original;
+            const plan = row.original;
 
             return (
                 <DropdownMenu>
@@ -80,10 +53,10 @@ export const columns: ColumnDef<Customer>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link href={`/customers/${customer.id}`}>View</Link>
+                            <Link href={`/plans/${plan.id}`}>View</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link href={`/customers/${customer.id}/edit`}>Edit</Link>
+                            <Link href={`/plans/${plan.id}/edit`}>Edit</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

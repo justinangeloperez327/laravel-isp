@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCustomerRequest extends FormRequest
 {
-        /**
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -43,7 +43,7 @@ class UpdateCustomerRequest extends FormRequest
             'devices' => ['nullable', 'array'],
             'devices.*' => ['required', 'exists:devices,id'],
 
-            'billing_due' => ['required', 'in:15th,30th'],
+            'billing_due' => ['required', 'in:15,30'],
         ];
     }
 

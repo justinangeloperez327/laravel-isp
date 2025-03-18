@@ -66,14 +66,12 @@ export default function Edit({ status, plans, devices, customer }: EditCustomerP
         last_name: customer.last_name,
         email: customer.email,
         mobile_no: customer.mobile_no,
-
         floor_or_unit: customer.floor_or_unit,
         street: customer.street,
         compound_or_building: customer.compound_or_building,
         barangay: customer.barangay,
         municipality_or_city: customer.municipality_or_city,
         province: customer.province,
-
         plan_id: customer.plan_id.toString(),
         start_date: customer.start_date,
         end_date: customer.end_date,
@@ -223,7 +221,7 @@ export default function Edit({ status, plans, devices, customer }: EditCustomerP
                                                     autoComplete="floor-unit"
                                                     value={data.floor_or_unit}
                                                     onChange={(e) => setData('floor_or_unit', e.target.value)}
-                                                    placeholder="Floor/Unit"
+                                                    placeholder="Floor or Unit"
                                                 />
                                                 <InputError message={errors.floor_or_unit} />
                                             </div>
@@ -255,7 +253,7 @@ export default function Edit({ status, plans, devices, customer }: EditCustomerP
                                                     autoComplete="compound-or-building"
                                                     value={data.compound_or_building}
                                                     onChange={(e) => setData('compound_or_building', e.target.value)}
-                                                    placeholder="Compound/Building"
+                                                    placeholder="Compound or Building"
                                                 />
                                                 <InputError message={errors.compound_or_building} />
                                             </div>
@@ -340,8 +338,8 @@ export default function Edit({ status, plans, devices, customer }: EditCustomerP
                                                     <SelectContent>
                                                         <SelectGroup>
                                                             <SelectLabel>Billing Due</SelectLabel>
-                                                            <SelectItem value="15th">Every 15th</SelectItem>
-                                                            <SelectItem value="30th">Every 30th</SelectItem>
+                                                            <SelectItem value="15">Every 15th</SelectItem>
+                                                            <SelectItem value="30">Every 30th</SelectItem>
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </Select>

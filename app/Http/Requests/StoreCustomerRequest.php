@@ -48,7 +48,7 @@ class StoreCustomerRequest extends FormRequest
             'devices' => ['nullable', 'array'],
             'devices.*' => ['required', 'exists:devices,id'],
 
-            'billing_due' => ['required', 'in:15th,30th'],
+            'billing_due' => ['required', 'in:15,30'],
         ];
     }
 
@@ -97,7 +97,6 @@ class StoreCustomerRequest extends FormRequest
             'end_date.required' => 'The end date is required.',
             'end_date.date' => 'The end date must be a valid date.',
             'status.in' => 'The selected status is invalid.',
-
 
             'lp.string' => 'The LP must be a string.',
             'lp.max' => 'The LP must not be greater than 255 characters.',

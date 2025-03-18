@@ -23,7 +23,7 @@ interface PaginatedData {
     from: number;
 }
 
-export default function Index({ data }: { data: PaginatedData }) {
+export default function Index({ data, status }: { data: PaginatedData; status: string }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Customers" />
@@ -34,8 +34,9 @@ export default function Index({ data }: { data: PaginatedData }) {
                             <Button>New Customer</Button>
                         </Link>
                     </div>
-                    <DataTable columns={columns} data={data ? data.data : []} />
+                    <DataTable columns={columns} paginatedData={data} />
                 </div>
+                {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
             </div>
         </AppLayout>
     );

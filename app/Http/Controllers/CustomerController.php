@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Customer;
 use App\Models\Device;
 use App\Models\Plan;
-use Exception;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,18 +18,21 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
+        $page = $request->input('page', 1);
         $sortField = $request->input('sort_field', 'id');
-        $sortDirection = $request->input('sort_direction', 'desc');
-        $filters = [];
+        $sortDirection = $request->input('sort_direction', 'asc');
+        $filters = $request->only('search');
 
-        if (!empty($status)) {
-            $filters[] = [
-                'id' => 'is_active',
-                'value' => $status
-            ];
-        }
-
-        $data =  Customer::query()->orderBy($sortField, $sortDirection)->paginate(perPage: $perPage);
+        $data = Customer::query()
+            ->whereAny([
+                'first_name',
+                'middle_name',
+                'last_name',
+                'email',
+                'mobile_no',
+            ], 'like', '%'.$filters['search'].'%' ?? '')
+            ->orderBy($sortField, $sortDirection)
+            ->paginate(perPage: $perPage, page: $page);
 
         return Inertia::render('customers/index', [
             'data' => $data,
