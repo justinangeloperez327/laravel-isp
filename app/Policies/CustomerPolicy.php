@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Customer;
 use App\Models\User;
 
-class CustomerPolicy
+final class CustomerPolicy
 {
     /**
      * Determine whether the user can view any models.

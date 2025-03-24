@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateDeviceRequest;
 use App\Models\Device;
 use Inertia\Inertia;
 
-class DeviceController extends Controller
+final class DeviceController extends Controller
 {
     /**
      * Display a listing of the resource.

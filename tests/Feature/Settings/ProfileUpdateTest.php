@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 it('render profile page', function () {
     $user = User::factory()->create();

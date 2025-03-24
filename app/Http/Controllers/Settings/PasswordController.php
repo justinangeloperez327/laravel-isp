@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PasswordController extends Controller
+final class PasswordController extends Controller
 {
     /**
      * Show the user's password settings page.
@@ -20,7 +20,7 @@ class PasswordController extends Controller
     {
         return Inertia::render('settings/password', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status'          => $request->session()->get('status'),
+            'status' => $request->session()->get('status'),
         ]);
     }
 
@@ -31,7 +31,7 @@ class PasswordController extends Controller
     {
         $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
-            'password'         => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
         $request->user()->update([

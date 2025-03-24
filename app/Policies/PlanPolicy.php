@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Plan;
 use App\Models\User;
 
-class PlanPolicy
+final class PlanPolicy
 {
     /**
      * Determine whether the user can view any models.

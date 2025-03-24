@@ -10,18 +10,18 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class CustomerController extends Controller
+final class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage       = $request->input('per_page', 10);
-        $page          = $request->input('page', 1);
-        $sortField     = $request->input('sort_field', 'id');
+        $perPage = $request->input('per_page', 10);
+        $page = $request->input('page', 1);
+        $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'asc');
-        $filters       = $request->only('search');
+        $filters = $request->only('search');
 
         $data = Customer::query()
             ->when($request->has('search'), function ($query) use ($filters) {
@@ -35,7 +35,7 @@ class CustomerController extends Controller
             ->paginate(perPage: $perPage, page: $page);
 
         return Inertia::render('customers/index', [
-            'data'    => $data,
+            'data' => $data,
             'filters' => $filters,
         ]);
     }
@@ -46,7 +46,7 @@ class CustomerController extends Controller
     public function create()
     {
         return Inertia::render('customers/create', [
-            'plans'   => Plan::all(),
+            'plans' => Plan::all(),
             'devices' => Device::all(),
         ]);
     }
@@ -82,8 +82,8 @@ class CustomerController extends Controller
         $customer->load('devices', 'plan');
 
         return Inertia::render('customers/edit', [
-            'plans'    => Plan::all(),
-            'devices'  => Device::all(),
+            'plans' => Plan::all(),
+            'devices' => Device::all(),
             'customer' => $customer,
         ]);
     }

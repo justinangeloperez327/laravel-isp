@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     protected static ?string $password;
 
@@ -16,7 +16,7 @@ class UserFactory extends Factory
     {
         return [
             'username' => fake()->unique()->userName,
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => self::$password ??= Hash::make('password'),
         ];
     }
 }

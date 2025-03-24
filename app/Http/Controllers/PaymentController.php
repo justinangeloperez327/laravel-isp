@@ -6,7 +6,7 @@ use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
 
-class PaymentController extends Controller
+final class PaymentController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -3,7 +3,7 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 it('updates password', function () {
     $user = User::factory()->create();
@@ -12,8 +12,8 @@ it('updates password', function () {
         ->actingAs($user)
         ->from('/settings/password')
         ->put('/settings/password', [
-            'current_password'      => 'password',
-            'password'              => 'new-password',
+            'current_password' => 'password',
+            'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 

@@ -5,7 +5,7 @@ use App\Models\User;
 
 use function Pest\Laravel\get;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 beforeAll(function () {
     Customer::factory()

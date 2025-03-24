@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer>
  */
-class CustomerFactory extends Factory
+final class CustomerFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,20 +18,20 @@ class CustomerFactory extends Factory
     public function definition(): array
     {
         return [
-            'registration_date'    => $this->faker->date(),
-            'first_name'           => $this->faker->firstName,
-            'middle_name'          => $this->faker->optional()->firstName,
-            'last_name'            => $this->faker->lastName,
-            'mobile_no'            => $this->faker->phoneNumber,
-            'email'                => $this->faker->unique()->safeEmail,
-            'floor_or_unit'        => $this->faker->buildingNumber,
-            'street'               => $this->faker->streetName,
+            'registration_date' => $this->faker->date(),
+            'first_name' => $this->faker->firstName,
+            'middle_name' => $this->faker->optional()->firstName,
+            'last_name' => $this->faker->lastName,
+            'mobile_no' => $this->faker->phoneNumber,
+            'email' => $this->faker->unique()->safeEmail,
+            'floor_or_unit' => $this->faker->buildingNumber,
+            'street' => $this->faker->streetName,
             'compound_or_building' => $this->faker->secondaryAddress,
-            'barangay'             => $this->faker->streetSuffix,
+            'barangay' => $this->faker->streetSuffix,
             'municipality_or_city' => $this->faker->city,
-            'province'             => $this->faker->state,
-            'plan_id'              => 1,
-            'billing_due'          => $this->faker->randomElement([15, 30]),
+            'province' => $this->faker->state,
+            'plan_id' => 1,
+            'billing_due' => $this->faker->randomElement([15, 30]),
         ];
     }
 

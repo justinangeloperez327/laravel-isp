@@ -8,18 +8,18 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PlanController extends Controller
+final class PlanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage       = $request->input('per_page', 10);
-        $page          = $request->input('page', 1);
-        $sortField     = $request->input('sort_field', 'id');
+        $perPage = $request->input('per_page', 10);
+        $page = $request->input('page', 1);
+        $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'asc');
-        $filters       = $request->only('search');
+        $filters = $request->only('search');
 
         $data = Plan::query()
             ->when($request->has('search'), function ($query) use ($filters) {
@@ -30,7 +30,7 @@ class PlanController extends Controller
             ->paginate(perPage: $perPage, page: $page);
 
         return Inertia::render('plans/index', [
-            'data'    => $data,
+            'data' => $data,
             'filters' => $filters,
         ]);
     }

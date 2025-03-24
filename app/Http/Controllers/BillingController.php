@@ -8,15 +8,15 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class BillingController extends Controller
+final class BillingController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage       = $request->input('per_page', 10);
-        $page          = $request->input('page', 1);
-        $sortField     = $request->input('sort_field', 'id');
+        $perPage = $request->input('per_page', 10);
+        $page = $request->input('page', 1);
+        $sortField = $request->input('sort_field', 'id');
         $sortDirection = $request->input('sort_direction', 'asc');
-        $filters       = $request->only('search');
+        $filters = $request->only('search');
 
         $billingDue = $request->has('billing_due') ? (int) $request->input('billing_due') : 30;
 
@@ -64,23 +64,49 @@ class BillingController extends Controller
             $currentBilling = $this->getOrGenerateBilling($customer, $billingDue);
 
             return [
-                'id'             => $customer->id,
-                'name'           => $customer->full_name,
-                'address'        => $customer->full_address,
-                'jo_number'      => 'JO-'.str_pad($customer->id, 5, '0', STR_PAD_LEFT),
-                'bill'           => $currentBilling->amount ?? $customer->plan->price ?? 0,
+                'id' => $customer->id,
+                'name' => $customer->full_name,
+                'address' => $customer->full_address,
+                'jo_number' => 'JO-'.mb_str_pad($customer->id, 5, '0', STR_PAD_LEFT),
+                'bill' => $currentBilling->amount ?? $customer->plan->price ?? 0,
                 'contact_number' => $customer->mobile_no,
-                'plan'           => $customer->plan->name     ?? 'No Plan',
-                'billing_due'    => $currentBilling->due_date ?? null,
-                'status'         => $currentBilling->status   ?? 'pending',
-                'billing_id'     => $currentBilling->id       ?? null,
+                'plan' => $customer->plan->name ?? 'No Plan',
+                'billing_due' => $currentBilling->due_date ?? null,
+                'status' => $currentBilling->status ?? 'pending',
+                'billing_id' => $currentBilling->id ?? null,
             ];
         });
 
         return Inertia::render('billing/index', [
-            'data'    => $data,
+            'data' => $data,
             'filters' => $filters,
         ]);
+    }
+
+    public function edit(Customer $customer)
+    {
+        $customer->load('plan');
+
+        return Inertia::render('billing/edit', [
+            'customer' => $customer,
+        ]);
+    }
+
+    public function update(Request $request, Customer $customer)
+    {
+        $request->validate([
+            'plan_id' => ['required', 'exists:plans,id'],
+            'billing_due' => ['required', 'in:15,30'],
+        ]);
+
+        $billing = Billing::where('customer_id', $customer->id)
+            ->where('status', 'pending')
+            ->latest()
+            ->first();
+
+        $customer->update($request->only(['plan_id', 'billing_due']));
+
+        return redirect()->route('billing.index')->with('status', 'Billing updated successfully!');
     }
 
     protected function getOrGenerateBilling($customer, int $billingDue = 30)
@@ -89,9 +115,9 @@ class BillingController extends Controller
             return null;
         }
 
-        $now          = Carbon::now();
+        $now = Carbon::now();
         $startOfMonth = $now->copy()->startOfMonth();
-        $endOfMonth   = $now->copy()->endOfMonth();
+        $endOfMonth = $now->copy()->endOfMonth();
 
         // Check if billing already exists for current month
         $existingBilling = Billing::where('customer_id', $customer->id)
@@ -111,39 +137,13 @@ class BillingController extends Controller
         }
 
         return Billing::create([
-            'customer_id'          => $customer->id,
-            'plan_id'              => $customer->plan_id,
-            'amount'               => $customer->plan->price,
-            'due_date'             => $dueDate,
-            'status'               => 'pending',
+            'customer_id' => $customer->id,
+            'plan_id' => $customer->plan_id,
+            'amount' => $customer->plan->price,
+            'due_date' => $dueDate,
+            'status' => 'pending',
             'billing_period_start' => $startOfMonth,
-            'billing_period_end'   => $endOfMonth,
+            'billing_period_end' => $endOfMonth,
         ]);
-    }
-
-    public function edit(Customer $customer)
-    {
-        $customer->load('plan');
-
-        return Inertia::render('billing/edit', [
-            'customer' => $customer,
-        ]);
-    }
-
-    public function update(Request $request, Customer $customer)
-    {
-        $request->validate([
-            'plan_id'     => ['required', 'exists:plans,id'],
-            'billing_due' => ['required', 'in:15,30'],
-        ]);
-
-        $billing = Billing::where('customer_id', $customer->id)
-            ->where('status', 'pending')
-            ->latest()
-            ->first();
-
-        $customer->update($request->only(['plan_id', 'billing_due']));
-
-        return redirect()->route('billing.index')->with('status', 'Billing updated successfully!');
     }
 }

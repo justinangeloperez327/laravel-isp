@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
 use Inertia\Inertia;
 
-class InvoiceController extends Controller
+final class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
