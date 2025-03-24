@@ -21,9 +21,9 @@ class Billing extends Model
     ];
 
     protected $casts = [
-        'due_date' => 'date',
+        'due_date'             => 'date',
         'billing_period_start' => 'date',
-        'billing_period_end' => 'date',
+        'billing_period_end'   => 'date',
     ];
 
     public function customer(): BelongsTo

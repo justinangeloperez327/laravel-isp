@@ -10,8 +10,8 @@ it('render register page', function () {
 
 it('register new user', function () {
     $response = $this->post('/register', [
-        'username' => 'Test User',
-        'password' => 'password',
+        'username'              => 'Test User',
+        'password'              => 'password',
         'password_confirmation' => 'password',
     ]);
 

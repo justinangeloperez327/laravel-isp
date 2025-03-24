@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Billing, PaginationLink } from '@/types';
 import { router } from '@inertiajs/react';
@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-table';
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useState } from 'react';
+import { Label } from '../ui/label';
 interface PaginatedData {
     data: Billing[];
     current_page: number;
@@ -38,6 +39,22 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
     });
     const [globalFilter, setGlobalFilter] = useState<string>('');
 
+    const [selectedDueDate, setSelectedDueDate] = useState<string>('15');
+
+    const handleDueDateChange = (value: string) => {
+        setSelectedDueDate(value.toString());
+        router.get(
+            route('billing.index'),
+            {
+                page: pagination.pageIndex + 1,
+                per_page: pagination.pageSize,
+                search: globalFilter,
+                billing_due: selectedDueDate,
+            },
+            { preserveState: true, preserveScroll: true },
+        );
+    };
+
     const table = useReactTable({
         data: paginatedData.data,
         columns,
@@ -57,6 +74,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
                     page: newPagination.pageIndex + 1,
                     per_page: newPagination.pageSize,
                     search: globalFilter,
+                    billing_due: selectedDueDate,
                 },
                 { preserveState: true, preserveScroll: true },
             );
@@ -69,6 +87,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
                     page: pagination.pageIndex + 1,
                     per_page: pagination.pageSize,
                     search: value,
+                    billing_due: selectedDueDate,
                 },
                 { preserveState: true, preserveScroll: true },
             );
@@ -82,6 +101,21 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
 
     return (
         <div>
+            <div className="grid gap-2">
+                <Label htmlFor="billing-due">Billing Due</Label>
+                <Select value={selectedDueDate} onValueChange={handleDueDateChange}>
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a billing due" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Billing Due</SelectLabel>
+                            <SelectItem value="15">Every 15th</SelectItem>
+                            <SelectItem value="30">Every 30th</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
             <div className="flex items-center py-4">
                 <Input
                     placeholder="Search..."

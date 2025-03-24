@@ -16,34 +16,50 @@ export const columns: ColumnDef<Billing>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
+        enableResizing: false,
+        size: 20,
     },
     {
         accessorKey: 'name',
         header: 'Name',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'jo_number',
         header: 'JO#',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'bill',
         header: 'Bill',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'payment_type',
         header: 'OR/Gcash',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'contact_number',
         header: 'Contact #',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'plan',
         header: 'Plan',
+        enableResizing: false,
+        size: 200,
     },
     {
         id: 'actions',
         header: 'Actions',
+        enableResizing: false,
+        size: 200,
         cell: ({ row }) => {
             const customer = row.original;
 
@@ -59,10 +75,10 @@ export const columns: ColumnDef<Billing>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link href={`/customers/${customer.id}`}>View</Link>
+                            <Link href={`/biiling/${customer.id}`}>View</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link href={`/customers/${customer.id}/edit`}>Edit</Link>
+                            <Link href={`/biiling/${customer.id}/edit`}>Edit</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

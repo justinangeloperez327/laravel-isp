@@ -12,8 +12,8 @@ it('updates password', function () {
         ->actingAs($user)
         ->from('/settings/password')
         ->put('/settings/password', [
-            'current_password' => 'password',
-            'password' => 'new-password',
+            'current_password'      => 'password',
+            'password'              => 'new-password',
             'password_confirmation' => 'new-password',
         ]);
 

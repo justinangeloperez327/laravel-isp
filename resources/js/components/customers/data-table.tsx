@@ -11,6 +11,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     PaginationState,
+    SortingState,
     useReactTable,
 } from '@tanstack/react-table';
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
@@ -37,7 +38,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
         pageSize: paginatedData.per_page,
     });
     const [globalFilter, setGlobalFilter] = useState<string>('');
-
+    const [sorting, setSorting] = useState<SortingState>([]);
     const table = useReactTable({
         data: paginatedData.data,
         columns,
@@ -46,6 +47,7 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
         getPaginationRowModel: getPaginationRowModel(),
         manualFiltering: true,
         manualPagination: true,
+        manualSorting: true,
         pageCount: Math.ceil(paginatedData.total / pagination.pageSize), // Use total rows from backend
         onPaginationChange: (updater) => {
             const newPagination = typeof updater === 'function' ? updater(pagination) : updater;
@@ -73,10 +75,11 @@ export function DataTable({ columns, paginatedData }: DataTableProps) {
                 { preserveState: true, preserveScroll: true },
             );
         },
-
+        onSortingChange: setSorting,
         state: {
             pagination,
             globalFilter,
+            sorting,
         },
     });
 

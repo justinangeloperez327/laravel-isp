@@ -42,9 +42,9 @@ class Customer extends Model
 
     protected $casts = [
         'registration_date' => 'date:Y-m-d',
-        'start_date' => 'date:Y-m-d',
-        'end_date' => 'date:Y-m-d',
-        'billing_due' => 'integer',
+        'start_date'        => 'date:Y-m-d',
+        'end_date'          => 'date:Y-m-d',
+        'billing_due'       => 'integer',
     ];
 
     public function getFullNameAttribute()

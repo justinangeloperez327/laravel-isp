@@ -25,42 +25,51 @@ export const columns: ColumnDef<Customer>[] = [
     {
         accessorKey: 'id',
         header: 'ID',
+        enableResizing: false,
+        size: 10,
     },
     {
         accessorKey: 'registration_date',
         header: 'Registration Date',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'first_name',
         header: 'First Name',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'middle_name',
         header: 'Middle Name',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'last_name',
         header: 'Last Name',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'mobile_no',
         header: 'Mobile No.',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'status',
         header: 'Status',
+        enableResizing: false,
+        size: 200,
     },
     {
         accessorKey: 'email',
         header: 'Email',
-        // header: ({ column }) => {
-        //     return (
-        //         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-        //             Email
-        //             <ArrowUpDown className="ml-2 h-4 w-4" />
-        //         </Button>
-        //     );
-        // },
+
+        enableResizing: false,
+        size: 200,
     },
     {
         id: 'actions',
