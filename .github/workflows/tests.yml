@@ -29,7 +29,7 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
